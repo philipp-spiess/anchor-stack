@@ -31,8 +31,8 @@ type CommentThread = {
 const highlightClassName =
   'rounded-sm px-0.5 -mx-0.5 cursor-pointer transition-colors'
 
-const highlightBaseClasses = ['bg-yellow-100', 'dark:bg-yellow-600/30', 'hover:bg-amber-200', 'dark:hover:bg-amber-500/40']
-const highlightSelectedClasses = ['bg-amber-300', 'dark:bg-amber-500/60']
+const highlightBaseClasses = ['bg-yellow-100', 'hover:bg-amber-200']
+const highlightSelectedClasses = ['bg-amber-300']
 
 const avatars = {
   ava: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face',
@@ -348,10 +348,10 @@ function Demo() {
   }, [selectionRect])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-slate-100">
       <div className="relative overflow-hidden">
-        <div className="pointer-events-none absolute -top-24 right-0 h-80 w-80 rounded-full bg-amber-200/40 blur-3xl dark:bg-cyan-500/20" />
-        <div className="pointer-events-none absolute -bottom-20 left-10 h-72 w-72 rounded-full bg-slate-200/70 blur-3xl dark:bg-slate-700/30" />
+        <div className="pointer-events-none absolute -top-24 right-0 h-80 w-80 rounded-full bg-amber-200/40 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-20 left-10 h-72 w-72 rounded-full bg-slate-200/70 blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-6xl px-6 py-12">
@@ -368,12 +368,12 @@ function Demo() {
         </header>
 
         <div ref={containerRef} className="relative flex gap-6">
-          <main className="flex-1 rounded-3xl border border-zinc-200 bg-white p-10 shadow-xl dark:border-zinc-800 dark:bg-slate-900">
+          <main className="flex-1 rounded-3xl border border-zinc-200 bg-white p-10 shadow-xl">
             <div
               ref={documentRef}
               onMouseUp={handleSelection}
               data-document
-              className="prose prose-zinc max-w-none dark:prose-invert"
+              className="prose prose-zinc max-w-none"
             >
               <h2 className="text-2xl font-semibold">Anchor Stack</h2>
               <p data-selection-target>
@@ -598,18 +598,18 @@ const CommentCard = forwardRef<HTMLDivElement, {
       onClick={onSelect}
     >
       <div
-        className={`rounded-2xl border bg-white text-sm shadow-lg transition dark:border-zinc-800 dark:bg-slate-900 ${
+        className={`rounded-2xl border bg-white text-sm shadow-lg transition ${
           selected
             ? 'border-blue-500 shadow-xl'
-            : 'border-zinc-200 hover:border-zinc-300 hover:shadow-xl dark:hover:border-zinc-700'
+            : 'border-zinc-200 hover:border-zinc-300 hover:shadow-xl'
         }`}
       >
         {/* Main comment */}
         <div className="flex items-start gap-3 p-4">
           <Avatar src={comment.data.avatar} />
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-              <span className="font-semibold text-slate-700 dark:text-slate-200">
+            <div className="flex items-center justify-between text-xs text-slate-500">
+              <span className="font-semibold text-slate-700">
                 {comment.data.author}
               </span>
               <span>{comment.data.time}</span>
@@ -623,7 +623,7 @@ const CommentCard = forwardRef<HTMLDivElement, {
                   onKeyDown={handleKeyDown}
                   onClick={(e) => e.stopPropagation()}
                   placeholder="Write a comment..."
-                  className="w-full resize-none rounded-lg border border-zinc-200 bg-zinc-50 p-2 text-sm text-slate-700 placeholder:text-slate-400 focus:border-zinc-300 focus:outline-none dark:border-zinc-700 dark:bg-slate-800 dark:text-slate-200 dark:placeholder:text-slate-500"
+                  className="w-full resize-none rounded-lg border border-zinc-200 bg-zinc-50 p-2 text-sm text-slate-700 placeholder:text-slate-400 focus:border-zinc-300 focus:outline-none"
                   rows={2}
                 />
                 <div className="mt-2 flex justify-end">
@@ -640,25 +640,25 @@ const CommentCard = forwardRef<HTMLDivElement, {
                 </div>
               </div>
             ) : (
-              <p className="mt-1 text-slate-700 dark:text-slate-200">{comment.data.text}</p>
+              <p className="mt-1 text-slate-700">{comment.data.text}</p>
             )}
           </div>
         </div>
 
         {/* Replies */}
         {comment.data.replies.length > 0 && (
-          <div className="border-t border-zinc-100 dark:border-zinc-800">
+          <div className="border-t border-zinc-100">
             {comment.data.replies.map((reply) => (
-              <div key={reply.id} className="flex items-start gap-3 px-4 py-3 border-b border-zinc-50 last:border-b-0 dark:border-zinc-800/50">
+              <div key={reply.id} className="flex items-start gap-3 px-4 py-3 border-b border-zinc-50 last:border-b-0">
                 <Avatar src={reply.avatar} size="sm" />
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-                    <span className="font-semibold text-slate-700 dark:text-slate-200">
+                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                    <span className="font-semibold text-slate-700">
                       {reply.author}
                     </span>
                     <span>{reply.time}</span>
                   </div>
-                  <p className="mt-0.5 text-slate-700 dark:text-slate-200">{reply.text}</p>
+                  <p className="mt-0.5 text-slate-700">{reply.text}</p>
                 </div>
               </div>
             ))}
@@ -667,7 +667,7 @@ const CommentCard = forwardRef<HTMLDivElement, {
 
         {/* Reply input */}
         {!isDraft && (
-          <div className="border-t border-zinc-100 dark:border-zinc-800 p-3">
+          <div className="border-t border-zinc-100 p-3">
             {showReplyInput ? (
               <div>
                 <textarea
@@ -677,7 +677,7 @@ const CommentCard = forwardRef<HTMLDivElement, {
                   onKeyDown={handleReplyKeyDown}
                   onClick={(e) => e.stopPropagation()}
                   placeholder="Write a reply..."
-                  className="w-full resize-none rounded-lg border border-zinc-200 bg-zinc-50 p-2 text-sm text-slate-700 placeholder:text-slate-400 focus:border-zinc-300 focus:outline-none dark:border-zinc-700 dark:bg-slate-800 dark:text-slate-200 dark:placeholder:text-slate-500"
+                  className="w-full resize-none rounded-lg border border-zinc-200 bg-zinc-50 p-2 text-sm text-slate-700 placeholder:text-slate-400 focus:border-zinc-300 focus:outline-none"
                   rows={2}
                 />
                 <div className="mt-2 flex justify-end gap-2">
@@ -687,7 +687,7 @@ const CommentCard = forwardRef<HTMLDivElement, {
                       setShowReplyInput(false)
                       setReplyText('')
                     }}
-                    className="rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-zinc-100 dark:text-slate-400 dark:hover:bg-slate-800"
+                    className="rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-zinc-100"
                   >
                     Cancel
                   </button>
@@ -709,7 +709,7 @@ const CommentCard = forwardRef<HTMLDivElement, {
                   e.stopPropagation()
                   setShowReplyInput(true)
                 }}
-                className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-left text-xs text-slate-400 transition hover:border-zinc-300 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-slate-800 dark:hover:border-zinc-600 dark:hover:bg-slate-700"
+                className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-left text-xs text-slate-400 transition hover:border-zinc-300 hover:bg-zinc-100"
               >
                 Reply...
               </button>
