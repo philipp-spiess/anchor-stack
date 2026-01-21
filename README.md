@@ -2,7 +2,7 @@
 
 Headless React utilities for positioning stacked UI elements next to their anchor points — perfect for inline comments, review threads, and annotations.
 
-![Anchor Stack demo](demo/screenshot.png)
+[![Anchor Stack demo](demo/screenshot.png)](https://philipp-spiess.github.io/anchor-stack/)
 
 ## Features
 
@@ -61,12 +61,10 @@ function Comments() {
 
 ## Demo
 
-Live demo: https://<your-github-username>.github.io/anchor-stack/
+**[Live demo →](https://philipp-spiess.github.io/anchor-stack/)**
 
-To build the demo locally:
+To run locally:
 
 ```bash
-bun run build:demo
+bun run dev
 ```
-
-Then open `demo/index.html`.

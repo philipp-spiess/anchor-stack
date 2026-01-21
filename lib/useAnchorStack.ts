@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { calculatePositions } from './calculatePositions'
 import { useRefs } from './useRefs'
 import type { AnchorStackItem, ItemPosition, UseAnchorStackOptions } from './types'
@@ -17,19 +17,19 @@ export function useAnchorStack<T>({
 
   const stableItems = useMemo(() => items, [items])
 
+  const schedule = useCallback(() => {
+    if (rafRef.current != null) {
+      return
+    }
+    rafRef.current = window.requestAnimationFrame(() => {
+      rafRef.current = null
+      setRevision((prev) => prev + 1)
+    })
+  }, [])
+
   useEffect(() => {
     if (typeof window === 'undefined') {
       return
-    }
-
-    const schedule = () => {
-      if (rafRef.current != null) {
-        return
-      }
-      rafRef.current = window.requestAnimationFrame(() => {
-        rafRef.current = null
-        setRevision((prev) => prev + 1)
-      })
     }
 
     window.addEventListener('resize', schedule)
@@ -43,7 +43,27 @@ export function useAnchorStack<T>({
         window.cancelAnimationFrame(rafRef.current)
       }
     }
-  }, [])
+  }, [schedule])
+
+  // Observe stack item elements for dimension changes
+  useEffect(() => {
+    if (typeof ResizeObserver === 'undefined') {
+      return
+    }
+
+    const resizeObserver = new ResizeObserver(schedule)
+
+    for (const item of stableItems) {
+      const element = refs.get(item.id).current
+      if (element) {
+        resizeObserver.observe(element)
+      }
+    }
+
+    return () => {
+      resizeObserver.disconnect()
+    }
+  }, [stableItems, refs, schedule])
 
   useLayoutEffect(() => {
     const anchorTops = new Map<string, number>()
