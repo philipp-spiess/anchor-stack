@@ -1,0 +1,6 @@
+node_modules
+dist
+demo/*.js
+demo/*.js.map
+playwright-report
+test-results
