@@ -70,17 +70,21 @@ export function useAnchorStack<T>({
     const heights = new Map<string, number>()
     const documentScrollTop = document.documentElement.scrollTop ?? 0
 
+    // Filter out items without anchors - log error and skip like the original implementation
+    const itemsWithAnchors: AnchorStackItem<T>[] = []
     for (const item of stableItems) {
       const element = anchorResolver(item)
       if (!element) {
+        console.error(`[useAnchorStack] Could not find anchor element for item "${item.id}"`)
         continue
       }
 
       const top = element.getBoundingClientRect().top + documentScrollTop
       anchorTops.set(item.id, top)
+      itemsWithAnchors.push(item)
     }
 
-    for (const item of stableItems) {
+    for (const item of itemsWithAnchors) {
       const element = refs.get(item.id).current
       if (!element) {
         continue
@@ -90,7 +94,7 @@ export function useAnchorStack<T>({
     }
 
     const { positions: nextPositions, sortedItems: nextSortedItems } = calculatePositions({
-      items: stableItems,
+      items: itemsWithAnchors,
       anchorTops,
       heights,
       selectedId,
